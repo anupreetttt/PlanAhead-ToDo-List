@@ -156,6 +156,17 @@
 
     tableBody.innerHTML = str;
   }
+  add = document.getElementById("add");
+  add.addEventListener("click", fetchAndUpdate);
+  updation();
+  function deletion(itemIndex) {
+    console.log("Delete", itemIndex)
+    itemJsonArrayString = localStorage.getItem('itemsJson')
+      itemJsonArray = JSON.parse(itemJsonArrayString);
+      itemJsonArray.splice(itemIndex, 1);
+
+      localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray))
+      updation();
 
   }
 </script>
