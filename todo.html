@@ -60,13 +60,13 @@
 <div class="container my-4">
 
   <h2 class="text-center">
-    <font face="Times new roman" size="20px" color="#FFFBF4">Plan ahead</font>
+    <font face="Arvo" size="20px" color="#FFFBF4">Plan ahead with TODO list</font>
   </h2>
 
 
   <div class="mb-3">
     <label for="title" class="form-label">
-      <font face="Serif" size="5px" color="#FFFBF4">Title: </font>
+      <font face="Arvo" size="5px" color="#FFFBF4">Title: </font>
     </label>
     <input type="text" class="form-control" id="title" aria-describedby="emailHelp">
     <div id="emailHelp" class="form-text">Add an item to your list</div>
@@ -78,17 +78,20 @@
     <textarea class="form-control" id="description" rows="3"></textarea>
   </div>
 
-  <button type="submit" id="add" class="btn btn-primary my-4">Add to my list</button>
+
+
+  <button id="add" class="btn my-4 p-3 mb-2 bg-dark text-white">Add to my list</button>
+  <button id="clearlist" class="btn my-4 p-3 mb-2 bg-dark text-white" onClick="clearList()">Clear my list</button>
 
   <div id="items" class="my-4">
-    <h2>Your items</h2>
-    <table class="table"> // Starting tab of the table
-      <thead> // The table heading
-        <tr> // table row
-          <th scope="col">#</th>
-          <th scope="col">Item Titles</th>
-          <th scope="col">Description</th>
-          <th scope="col">Pending items</th>
+    <h2 style="color:#FFFBF4; font-family: Arvo;">Your items</h2>
+    <table class="table">
+      <thead>
+        <tr>
+          <th scope="col" style="color:#FFFBF4; font-family: Arvo;">#</th>
+          <th scope="col" style="color:#FFFBF4; font-family: Arvo;">Items</th>
+          <th scope="col" style="color:#FFFBF4; font-family: Arvo;">Description</th>
+          <th scope="col" style="color:#FFFBF4; font-family: Arvo;">Action</th>
 
         </tr>
       </thead>
@@ -137,10 +140,16 @@
     updation();
   }
 
-    function updation(){
+  function updation() {
 
+    if (localStorage.getItem('itemsJson') == null) {
+      itemJsonArray = [];
+      localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray))
+    } else {
+      itemJsonArrayString = localStorage.getItem('itemsJson')
+      itemJsonArray = JSON.parse(itemJsonArrayString);
+    }
     // Filling up the table
-
     let tableBody = document.getElementById("tableBody")
     let str = "";
     itemJsonArray.forEach((element, index) => {
@@ -162,12 +171,19 @@
   function deletion(itemIndex) {
     console.log("Delete", itemIndex)
     itemJsonArrayString = localStorage.getItem('itemsJson')
-      itemJsonArray = JSON.parse(itemJsonArrayString);
-      itemJsonArray.splice(itemIndex, 1);
+    itemJsonArray = JSON.parse(itemJsonArrayString);
+    itemJsonArray.splice(itemIndex, 1);
 
-      localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray))
+    localStorage.setItem('itemsJson', JSON.stringify(itemJsonArray))
+    updation();
+
+  }
+  function clearList() {
+    if (confirm("Are you sure you want to clear everything on your list?")) {
+      console.log('Cleared everything')
+      localStorage.clear();
       updation();
-
+    }
   }
 </script>
 </body>
